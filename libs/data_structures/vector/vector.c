@@ -46,7 +46,7 @@ void deleteVector(vector *v) {
 }
 
 bool isEmpty(vector *v) {
-    return !(v->size);
+    return !v->size;
 }
 
 bool isFull(vector *v) {
@@ -58,12 +58,8 @@ int getVectorValue(vector *v, size_t i) {
 }
 
 void pushBack(vector *v, int x) {
-    if (isFull(v)) {
-        if (v->capacity)
-            reserve(v, v->capacity * 2);
-        else
-            reserve(v, 1);
-    }
+    if (isFull(v))
+        reserve(v, v->capacity ? v->capacity * 2 : 1);
     v->data[v->size] = x;
     v->size++;
 }
