@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
+#include <memory.h>
 #include "vectorVoid.h"
 
 vectorVoid createVectorV(size_t n, size_t baseTypeSize) {
@@ -44,4 +46,37 @@ void deleteVectorV(vectorVoid *v) {
     v->data = NULL;
     v->size = 0;
     v->capacity = 0;
+}
+
+bool isEmptyV(vectorVoid *v) {
+    return !v->size;
+}
+
+bool isFullV(vectorVoid *v) {
+    return v->size == v->capacity;
+}
+
+void getVectorValueV(vectorVoid *v, size_t index, void *destination) {
+    char *source = (char *) v->data + index * v->baseTypeSize;
+    memcpy(destination , source , v->baseTypeSize);
+}
+
+void setVectorValueV(vectorVoid *v, size_t index, void *source) {
+    char *destination = (char *) v->data + index * v->baseTypeSize;
+    memcpy(destination, source, v->baseTypeSize);
+}
+
+void pushBackV(vectorVoid *v, void *source) {
+    if (isFullV(v))
+        reserveV(v, v->capacity ? v->capacity * 2 : 1);
+    setVectorValueV(v, v->size, source);
+    v->size++;
+}
+
+void popBackV(vectorVoid *v) {
+    if (isEmptyV(v)) {
+        fprintf(stderr, "empty vector");
+        exit(1);
+    }
+    v->size--;
 }
